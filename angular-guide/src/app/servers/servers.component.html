@@ -1,0 +1,31 @@
+<p><button class="btn btn-primary" (click)="onDisplayDetails()">Toggle Details</button></p>
+
+<p *ngIf="displayDetails">Secret password = tuna</p>
+
+<div *ngFor="let log of logs; let current_index = index"
+[ngStyle]="{'background-color': current_index >= 4 ? 'blue' : 'transparent'}"
+[ngClass]="{'white-text': current_index >= 4}"
+>{{ log }}</div>
+
+<hr>
+
+<label>Username: </label> <input type="text" class="form-control" [(ngModel)]="userName">
+
+<p>{{ userName }}</p>
+
+<button class="btn btn-primary" [disabled]="userName === ''" (click)="resetUserName()">Reset Username</button>
+
+<hr>
+
+<label>Server Name</label>
+
+<input type="text" class="form-control" [(ngModel)]="serverName">
+
+<p>{{ serverName }}</p>
+
+<button class="btn btn-primary" [disabled]="!allowNewServer" (click)="onCreateServer()">Add Servers</button>
+
+<p *ngIf="serverCreated">Server was created, server names is {{ serverName }}</p>
+
+<app-server *ngFor="let server of servers"></app-server>
+
