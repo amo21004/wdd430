@@ -11,10 +11,10 @@ export class DocumentListComponent implements OnInit {
 
   documents: Document[] = [
     new Document(1, 'My Resume', 'This document contains my resume', 'http://www.linkedin.com', null),
-    new Document(2, 'My Alternative Resume', 'This document contains my alternative resume', 'http://www.linkedin.com', null),
-    new Document(3, 'My Resume', 'This document contains my resume', 'http://www.linkedin.com', null),
-    new Document(4, 'My Alternative Resume', 'This document contains my alternative resume', 'http://www.linkedin.com', null),
-    new Document(5, 'My Resume', 'This document contains my resume', 'http://www.linkedin.com', null)
+    new Document(2, 'My first document', 'This is my first document', 'http://www.link1.com', null),
+    new Document(3, 'My second document', 'This is my second document', 'http://www.link2.com', null),
+    new Document(4, 'My third document', 'This is my third document', 'http://www.link3.com', null),
+    new Document(5, 'My fourth document', 'This is my fourth document', 'http://www.link4.com', null)
   ];
 
   constructor() { }
