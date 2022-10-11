@@ -34,11 +34,8 @@ import { DropdownDirective } from './dropdown.directive';
     MessageListComponent,
     DropdownDirective
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
+  imports: [BrowserModule, AppRoutingModule],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

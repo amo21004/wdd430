@@ -1,18 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { ContactListComponent } from './contact-list/contact-list.component';
 import { Contact } from './contact.model';
+import { ContactService } from './contact.service';
 
 @Component({
   selector: 'cms-contacts',
   templateUrl: './contacts.component.html',
-  styleUrls: ['./contacts.component.css']
+  styleUrls: ['./contacts.component.css'],
 })
 export class ContactsComponent implements OnInit {
-  selectedContact: Contact = (new ContactListComponent).contacts[0];
+  selectedContact: Contact;
 
-  constructor() { }
+  constructor(private contactService: ContactService) {}
 
   ngOnInit(): void {
+    this.contactService.contactSelectedEvent.subscribe((contact: Contact) => {
+      this.selectedContact = contact;
+    });
   }
-
 }
