@@ -19,9 +19,17 @@ export class ContactListComponent implements OnInit {
 
     // Set first contact as default on first load
     this.contactService.contactSelectedEvent.emit(this.contacts[0]);
+
+    this.contactService.contactChangedEvent.subscribe(
+      (contacts: Contact[]) => {
+        this.contacts = contacts;
+      }
+    );
   }
 
+  /*
   onSelected(contact: Contact) {
     this.contactService.contactSelectedEvent.emit(contact);
   }
+  */
 }
