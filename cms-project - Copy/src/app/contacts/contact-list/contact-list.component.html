@@ -1,0 +1,17 @@
+<div class="panel-group">
+    <div class="panel panel-default">
+        <div class="panel-heading clearfix">
+            <div class="pull-left"><strong class="show mt-3">Contacts</strong></div>
+
+            <div class="pull-right"><a [routerLink]="['new']" class="btn btn-success">New Contact</a></div>
+        </div>
+
+        <div class="panel-body">
+            <cms-contact-item
+            *ngFor="let contact of contacts"
+            [contact]="contact"
+            >
+            </cms-contact-item>
+        </div>
+    </div>
+</div>
