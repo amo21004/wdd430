@@ -15,6 +15,8 @@ export class ContactListComponent implements OnInit {
 
   contacts: Contact[] = [];
 
+  term: string;
+
   constructor(private contactService: ContactService) {}
 
   ngOnInit(): void {
@@ -32,6 +34,10 @@ export class ContactListComponent implements OnInit {
     this.subscription = this.contactService.contactListChangedEvent.subscribe((contactsList: Contact[]) => {
       this.contacts = contactsList;
     });
+  }
+
+  search(value: string) {
+    this.term = value;
   }
 
   /*
