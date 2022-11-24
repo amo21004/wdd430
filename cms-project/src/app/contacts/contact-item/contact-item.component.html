@@ -3,7 +3,7 @@
         {{ contact.name }}
     </div>
 
-    <div class="pull-right">
+    <div class="pull-right" *ngIf="contact.imageUrl">
         <img src="{{ contact.imageUrl }}" alt="{{ contact.name }}" class="img-responsive">
     </div>
 </div></a>

@@ -1,5 +1,6 @@
 export class Document {
   constructor(
+    public _id: string|null,
     public id: number,
     public name: string,
     public description: string,

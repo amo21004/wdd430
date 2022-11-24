@@ -27,7 +27,7 @@ export class DocumentService {
 
   getDocuments(): any {
     //return this.documents.slice();
-    return this.http.get<Document[]>('https://cms-project-e85f6-default-rtdb.firebaseio.com/documents.json').subscribe((documents: Document[]) => {
+    return this.http.get<Document[]>('http://localhost:3000/documents').subscribe((documents: Document[]) => {
       this.documents = documents;
 
       this.maxDocumentId = this.getMaxId();
@@ -56,7 +56,7 @@ export class DocumentService {
   storeDocuments(documents: Document[]) {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-    return this.http.put('https://cms-project-e85f6-default-rtdb.firebaseio.com/documents.json', documents, { headers: headers }).subscribe(response => {
+    return this.http.put('http://localhost:3000/documents', documents, { headers: headers }).subscribe(response => {
       this.documentListChangedEvent.next(this.documents);
     });
   }
@@ -75,6 +75,27 @@ export class DocumentService {
     if (!document) {
       return;
     }
+
+    const pos = this.documents.findIndex(d => d.id === document.id);
+
+    if (pos < 0) {
+      return;
+    }
+
+    // delete from database
+    this.http.delete('http://localhost:3000/documents/' + document.id)
+      .subscribe(
+        () => {
+          //this.documents.splice(pos, 1);
+          this.getDocuments();
+          //this.sortAndSend();
+        }
+      );
+
+    /*
+    if (!document) {
+      return;
+    }
     const pos = this.documents.indexOf(document);
     if (pos < 0) {
       return;
@@ -87,8 +108,35 @@ export class DocumentService {
 
     //this.documentChangedEvent.emit(this.documents.slice());
     this.storeDocuments(documentsListClone);
+    */
   }
 
+  addDocument(document: Document) {
+    if (!document) {
+      return;
+    }
+
+    // make sure id of the new Document is empty
+    document.id = null;
+
+    const headers = new HttpHeaders({'Content-Type': 'application/json'});
+
+    // add to database
+    this.http.post<{ message: string, document: Document }>('http://localhost:3000/documents',
+      document,
+      { headers: headers })
+      .subscribe(
+        (responseData) => {
+          //console.log(responseData);
+          // add new document to documents
+          //this.documents.push(responseData.document);
+          //this.sortAndSend();
+          this.getDocuments();
+        }
+      );
+  }
+
+  /*
   addDocument(newDocument: Document) {
     if (newDocument == undefined || newDocument == null) {
       return
@@ -105,8 +153,36 @@ export class DocumentService {
     //this.documentListChangedEvent.next(documentsListClone);
     this.storeDocuments(documentsListClone);
   }
+  */
 
   updateDocument(originalDocument: Document, newDocument: Document) {
+    if (!originalDocument || !newDocument) {
+      return;
+    }
+
+    const pos = this.documents.findIndex(d => d.id === originalDocument.id);
+
+    if (pos < 0) {
+      return;
+    }
+
+    // set the id of the new Document to the id of the old Document
+    newDocument.id = originalDocument.id;
+    newDocument._id = originalDocument._id;
+
+    const headers = new HttpHeaders({'Content-Type': 'application/json'});
+
+    // update database
+    this.http.put('http://localhost:3000/documents/' + originalDocument.id,
+      newDocument, { headers: headers })
+      .subscribe(
+        () => {
+          this.documents[pos] = newDocument;
+          //this.sortAndSend();
+        }
+      );
+
+    /*
     if (originalDocument == undefined || originalDocument == null || newDocument == undefined || newDocument == null) {
       return;
     }
@@ -125,16 +201,17 @@ export class DocumentService {
 
     //this.documentListChangedEvent.next(documentsListClone);
     this.storeDocuments(documentsListClone);
+    */
   }
 
   getMaxId(): number {
-    const maxId = 0;
+    let maxId = 0;
 
     for (const document of this.documents) {
       const currentId = +document.id;
 
       if (currentId > maxId) {
-        const maxId = currentId
+        maxId = currentId
       }
     }
 

@@ -20,6 +20,6 @@ export class MessageItemComponent implements OnInit {
       this.message.sender
     );
 
-    this.messageSender = contact.name;
+    this.messageSender = contact?.name;
   }
 }

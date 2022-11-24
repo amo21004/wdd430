@@ -58,6 +58,7 @@ export class ContactEditComponent implements OnInit {
     const value = form.value;
 
     const newContact = new Contact(
+      '',
       value.id,
       value.name,
       value.email,

@@ -2,7 +2,17 @@ const express = require('express');
 
 const bodyParser = require('body-parser');
 
+const mongoose = require('mongoose');
+
+const Post = require('./models/post');
+
 const app = express();
+
+mongoose.connect("mongodb+srv://naif:qJZbY6pvn31visHJ@cluster0.k2pxs1k.mongodb.net/node-angular?retryWrites=true&w=majority").then(() => {
+    console.log('connected');
+}).catch(() => {
+    console.log('failed to connect');
+});
 
 app.use(bodyParser.json());
 
@@ -16,33 +26,36 @@ app.use((request, response, next) => {
 });
 
 app.post('/api/posts', (request, response, next) => {
-    const post = request.body;
+    const post = new Post({
+        title: request.body.title,
+        content: request.body.content
+    });
 
-    console.log(post);
-
-    response.status(201).json({
-        message: 'Post addedd successfully'
+    post.save().then(createdPost => {
+        response.status(201).json({
+            message: 'Post addedd successfully',
+            postId: createdPost._id
+        });
     });
 });
 
 app.get('/api/posts', (request, response, next) => {
-    const posts = [
-        {
-            id: 1,
-            title: 'First server side post',
-            content: 'This is the first post coming from the server'
-        },
-        {
-            id: 2,
-            title: 'Second server side post',
-            content: 'This is the second post coming from the server'
+    Post.find().then(
+        (documents) => {
+            return response.status(200).json({
+                message: 'Posts fetched successfully',
+                posts: documents
+            });
         }
-    ];
+    );
+});
 
-    return response.status(200).json({
-        message: 'Posts fetched successfully',
-        posts: posts
+app.delete('/api/posts/:id', (request, response, next) => {
+    Post.deleteOne({_id: request.params.id}).then((result) => {
+        response.status(200).json({message: 'Post deleted!'});
     });
+
+    response.status(200).json({message: 'Post deleted!'});
 });
 
 module.exports = app;
