@@ -1,0 +1,57 @@
+<h1>Add New Movie</h1>
+
+<div class="alert alert-success" role="alert" *ngIf="status == 1 && message" [innerHTML]="message"></div>
+
+<div class="alert alert-danger" role="alert" *ngIf="status == -1 && message" [innerHTML]="message"></div>
+
+<form (ngSubmit)="onSubmit(movie)" #movie="ngForm">
+    <div class="mb-3">
+        <label for="movie-title" class="form-label">Title</label>
+
+        <input type="text" class="form-control" id="movie-title" name="title" ngModel #title="ngModel" required>
+
+        <div class="d-block invalid-feedback" *ngIf="title.invalid && (title.dirty || title.touched)">
+            This field is required.
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="movie-summary" class="form-label">Summary</label>
+
+        <textarea class="form-control" id="movie-summary" name="summary" ngModel #summary="ngModel" required></textarea>
+
+        <div class="d-block invalid-feedback" *ngIf="summary.invalid && (summary.dirty || summary.touched)">
+            This field is required.
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="movie-release-date" class="form-label">Release Date</label>
+
+        <input type="date" class="form-control" id="movie-release-date" name="release_date" ngModel #release_date="ngModel">
+
+        <div class="d-block invalid-feedback" *ngIf="release_date.invalid && (release_date.dirty || release_date.touched)">
+            This field is required.
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="movie-actors" class="form-label">Actors</label>
+
+        <select class="form-select" id="movie-actors" name="actors" ngModel #actors="ngModel" [size]="persons?.length" multiple>
+            <ng-container *ngFor="let person of persons">
+                <option [value]="person._id">
+                    {{person.first_name}}
+                    {{person.middle_name}}
+                    {{person.last_name}}
+                </option>
+            </ng-container>
+        </select>
+    </div>
+
+    <div class="alert alert-warning" role="alert" *ngIf="movie.touched && (!title.value || !summary.value)">
+        Some required fields are missing.
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="movie.invalid">Create Movie</button>
+</form>

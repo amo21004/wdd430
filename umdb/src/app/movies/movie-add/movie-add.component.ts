@@ -1,24 +1,33 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MovieService } from '../movie.service';
+import { Person } from 'src/app/persons/person.model';
+import { PersonService } from 'src/app/persons/person.service';
 
 @Component({
   selector: 'app-movie-add',
   templateUrl: './movie-add.component.html',
   styleUrls: ['./movie-add.component.css']
 })
-export class MovieAddComponent {
+export class MovieAddComponent implements OnInit {
   @ViewChild('movie') movieForm?: NgForm;
 
   public status: number = 0;
   public message: string = '';
+  public persons?: Person[];
 
-  constructor(private movieService: MovieService) {}
+  constructor(private movieService: MovieService, private personService: PersonService) {}
+
+  ngOnInit(): void {
+    this.personService.getPersons().subscribe(persons => {
+      this.persons = persons;
+    });
+  }
 
   onSubmit(form: NgForm) {
     const movie = form.value;
 
-    if(!movie.title || !movie.summary || !movie.release_date) {
+    if(!movie.title || !movie.summary) {
       return;
     }
 
@@ -26,7 +35,9 @@ export class MovieAddComponent {
       if(result.success) {
         this.status = 1;
 
-        this.message = `The movie was added successfully. ID is <a href="/movies/${result.movie._id}/edit">${result.movie._id}</a>`;
+        this.message = 'The movie was added successfully.';
+
+        this.movieForm?.resetForm();
       }
       else {
         this.status = -1;

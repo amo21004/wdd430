@@ -28,16 +28,56 @@
     <div class="mb-3">
         <label for="movie-release-date" class="form-label">Release Date</label>
 
-        <input type="date" class="form-control" id="movie-release-date" name="release_date" ngModel #release_date="ngModel" required>
+        <input type="date" class="form-control" id="movie-release-date" name="release_date" ngModel #release_date="ngModel">
 
         <div class="d-block invalid-feedback" *ngIf="release_date.invalid && (release_date.dirty || release_date.touched)">
             This field is required.
         </div>
     </div>
 
-    <div class="alert alert-warning" role="alert" *ngIf="movie.touched && (!title.value || !summary.value || !release_date.value)">
+    <div class="mb-3">
+        <label for="movie-image-url" class="form-label">Image URL</label>
+
+        <input type="url" class="form-control" id="movie-image-url" name="image_url" ngModel #image_url="ngModel">
+
+        <div class="d-block invalid-feedback" *ngIf="image_url.invalid && (image_url.dirty || image_url.touched)">
+            This field is required.
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="movie-actors" class="form-label">Actors</label>
+
+        <ng-select
+            name="actors"
+            [items]="persons!"
+            bindLabel="first_name"
+            placeholder="Select Actors"
+            appendTo="body"
+            [multiple]="true"
+            ngModel
+        >
+        </ng-select>
+    </div>
+
+    <div class="mb-3">
+        <label for="movie-directors" class="form-label">Director(s)</label>
+
+        <ng-select
+            name="directors"
+            [items]="persons!"
+            bindLabel="first_name"
+            placeholder="Select Director(s)"
+            appendTo="body"
+            [multiple]="true"
+            ngModel
+        >
+        </ng-select>
+    </div>
+
+    <div class="alert alert-warning" role="alert" *ngIf="movie.touched && (!title.value || !summary.value)">
         Some required fields are missing.
     </div>
 
-    <button type="submit" class="btn btn-primary" [disabled]="movie.invalid">Add Movie</button>
+    <button type="submit" class="btn btn-primary" [disabled]="movie.invalid">Create Movie</button>
 </form>

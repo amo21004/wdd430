@@ -1,11 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
 body {
     padding: 0 0 75px 0;
+}
+
+img {
+    max-width: 100%;
 }
 
 .btn {
     --bs-btn-disabled-opacity: 0.5;
     --bs-btn-disabled-bg: #aaa;
     --bs-btn-disabled-border-color: #888;
+}
+
+fa-icon {
+    cursor: pointer;
 }

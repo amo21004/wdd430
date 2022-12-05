@@ -29,9 +29,9 @@
         <tr *ngFor="let movie of movies">
             <td>{{ movie.title }}</td>
             <td>{{ movie.summary }}</td>
-            <td>{{ movie.release_date }}</td>
+            <td>{{ movie.release_date | date : 'longDate' }}</td>
             <td>
-                <a class="me-3 text-white" [routerLink]="[movie._id, 'view']">
+                <a class="me-3 text-white" [routerLink]="[movie._id]">
                     <fa-icon [icon]="fa.faArrowUpRightFromSquare"></fa-icon>
                 </a>
 

@@ -1,1 +1,99 @@
-<p>movie-edit works!</p>
+<h1>Edit Movie</h1>
+
+<div class="alert alert-success" role="alert" *ngIf="status == 1 && message" [innerHTML]="message"></div>
+
+<div class="alert alert-danger" role="alert" *ngIf="status == -1 && message" [innerHTML]="message"></div>
+
+<form (ngSubmit)="onSubmit(movie)" #movie="ngForm">
+    <div class="mb-3">
+        <label for="movie-title" class="form-label">Title</label>
+
+        <input type="text" class="form-control" id="movie-title" name="title" [ngModel]="movieToEdit?.title" #title="ngModel" required>
+
+        <div class="d-block invalid-feedback" *ngIf="title.invalid && (title.dirty || title.touched)">
+            This field is required.
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="movie-summary" class="form-label">Summary</label>
+
+        <textarea class="form-control" id="movie-summary" name="summary" [ngModel]="movieToEdit?.summary" #summary="ngModel" required></textarea>
+
+        <div class="d-block invalid-feedback" *ngIf="summary.invalid && (summary.dirty || summary.touched)">
+            This field is required.
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="movie-release-date" class="form-label">Release Date</label>
+
+        <input type="date" class="form-control" id="movie-release-date" name="release_date" [ngModel]="movieToEdit?.release_date | date:'yyyy-MM-dd'" #release_date="ngModel">
+
+        <div class="d-block invalid-feedback" *ngIf="release_date.invalid && (release_date.dirty || release_date.touched)">
+            This field is required.
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="movie-image-url" class="form-label">Image URL</label>
+
+        <input type="url" class="form-control" id="movie-image-url" name="image_url" [ngModel]="movieToEdit?.image_url" #image_url="ngModel">
+
+        <div class="d-block invalid-feedback" *ngIf="image_url.invalid && (image_url.dirty || image_url.touched)">
+            This field is required.
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="movie-actors" class="form-label">Actors</label>
+
+        <ng-select
+            name="actors"
+            [items]="persons!"
+            bindLabel="first_name"
+            placeholder="Select Actors"
+            appendTo="body"
+            [multiple]="true"
+            [(ngModel)]="movieToEdit!.actors"
+        >
+            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                <span class="ng-value-label">{{item.first_name + ' ' + item.last_name}}</span>
+                <span class="ng-value-icon right" (click)="clear(item)">×</span>
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item" let-search="searchTerm">
+                {{item.first_name + ' ' + item.last_name}}
+            </ng-template>
+        </ng-select>
+    </div>
+
+    <div class="mb-3">
+        <label for="movie-directors" class="form-label">Director(s)</label>
+
+        <ng-select
+            name="directors"
+            [items]="persons!"
+            bindLabel="first_name"
+            placeholder="Select Director(s)"
+            appendTo="body"
+            [multiple]="true"
+            [(ngModel)]="movieToEdit!.directors"
+        >
+            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                <span class="ng-value-label">{{item.first_name + ' ' + item.last_name}}</span>
+                <span class="ng-value-icon right" (click)="clear(item)">×</span>
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item" let-search="searchTerm">
+                {{item.first_name + ' ' + item.last_name}}
+            </ng-template>
+        </ng-select>
+    </div>
+
+    <div class="alert alert-warning" role="alert" *ngIf="movie.touched && (!title.value || !summary.value)">
+        Some required fields are missing.
+    </div>
+
+    <input type="hidden" class="form-control" name="_id" [ngModel]="movieToEdit?._id" #_id="ngModel" required>
+
+    <button type="submit" class="btn btn-primary" [disabled]="movie.invalid">Save Updates</button>
+</form>

@@ -1,0 +1,43 @@
+<h1>Add a Person</h1>
+
+<div class="alert alert-success" role="alert" *ngIf="status == 1 && message" [innerHTML]="message"></div>
+
+<div class="alert alert-danger" role="alert" *ngIf="status == -1 && message" [innerHTML]="message"></div>
+
+<form (ngSubmit)="onSubmit(person)" #person="ngForm">
+    <div class="mb-3">
+        <label for="person-first-name" class="form-label">First Name</label>
+
+        <input type="text" class="form-control" id="person-first-name" name="first_name" ngModel #first_name="ngModel" required>
+
+        <div class="d-block invalid-feedback" *ngIf="first_name.invalid && (first_name.dirty || first_name.touched)">
+            This field is required.
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="person-middle-name" class="form-label">Middle Name</label>
+
+        <input type="text" class="form-control" id="person-middle-name" name="middle_name" ngModel #middle_name="ngModel">
+
+        <div class="d-block invalid-feedback" *ngIf="middle_name.invalid && (middle_name.dirty || middle_name.touched)">
+            This field is required.
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="person-last-name" class="form-label">Last Name</label>
+
+        <input type="text" class="form-control" id="person-last-name" name="last_name" ngModel #last_name="ngModel" required>
+
+        <div class="d-block invalid-feedback" *ngIf="last_name.invalid && (last_name.dirty || last_name.touched)">
+            This field is required.
+        </div>
+    </div>
+
+    <div class="alert alert-warning" role="alert" *ngIf="person.touched && (!first_name.value || !last_name.value)">
+        Some required fields are missing.
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="person.invalid">Create Person</button>
+</form>

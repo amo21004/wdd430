@@ -30,3 +30,5 @@ mongoose.connect(process.env.MONGO_URI,
 );
 
 app.use('/movies', require('./backend/routes/movies'));
+
+app.use('/persons', require('./backend/routes/persons'));
